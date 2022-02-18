@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>76053</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div class="cell code" data-execution_count="2">
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> numpy <span class="im">as</span> np <span class="co"># linear algebra</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="im">import</span> pandas <span class="im">as</span> pd <span class="co"># data processing, CSV file I/O (e.g. pd.read_csv)</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt <span class="co"># for data visualization purposes</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="im">import</span> seaborn <span class="im">as</span> sns <span class="co"># for statistical data visualization</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="op">%</span>matplotlib inline</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="3">
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">import</span> warnings</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a>warnings.filterwarnings(<span class="st">&#39;ignore&#39;</span>)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="5">
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>data <span class="op">=</span> <span class="st">&#39;C:/Users/W2S/Downloads/Algorithms/adult.csv&#39;</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a>df <span class="op">=</span> pd.read_csv(data, header<span class="op">=</span><span class="va">None</span>, sep<span class="op">=</span><span class="st">&#39;,\s&#39;</span>)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="6">
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>df.shape</span></code></pre></div>
+<div class="output execute_result" data-execution_count="6">
+<pre><code>(32561, 15)</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="7">
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>df.head()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="7">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+      <th>10</th>
+      <th>11</th>
+      <th>12</th>
+      <th>13</th>
+      <th>14</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>39</td>
+      <td>State-gov</td>
+      <td>77516</td>
+      <td>Bachelors</td>
+      <td>13</td>
+      <td>Never-married</td>
+      <td>Adm-clerical</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>2174</td>
+      <td>0</td>
+      <td>40</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>50</td>
+      <td>Self-emp-not-inc</td>
+      <td>83311</td>
+      <td>Bachelors</td>
+      <td>13</td>
+      <td>Married-civ-spouse</td>
+      <td>Exec-managerial</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>0</td>
+      <td>0</td>
+      <td>13</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>38</td>
+      <td>Private</td>
+      <td>215646</td>
+      <td>HS-grad</td>
+      <td>9</td>
+      <td>Divorced</td>
+      <td>Handlers-cleaners</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>0</td>
+      <td>0</td>
+      <td>40</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>53</td>
+      <td>Private</td>
+      <td>234721</td>
+      <td>11th</td>
+      <td>7</td>
+      <td>Married-civ-spouse</td>
+      <td>Handlers-cleaners</td>
+      <td>Husband</td>
+      <td>Black</td>
+      <td>Male</td>
+      <td>0</td>
+      <td>0</td>
+      <td>40</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>28</td>
+      <td>Private</td>
+      <td>338409</td>
+      <td>Bachelors</td>
+      <td>13</td>
+      <td>Married-civ-spouse</td>
+      <td>Prof-specialty</td>
+      <td>Wife</td>
+      <td>Black</td>
+      <td>Female</td>
+      <td>0</td>
+      <td>0</td>
+      <td>40</td>
+      <td>Cuba</td>
+      <td>&lt;=50K</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="8">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>col_names <span class="op">=</span> [<span class="st">&#39;age&#39;</span>, <span class="st">&#39;workclass&#39;</span>, <span class="st">&#39;fnlwgt&#39;</span>, <span class="st">&#39;education&#39;</span>, <span class="st">&#39;education_num&#39;</span>, <span class="st">&#39;marital_status&#39;</span>, <span class="st">&#39;occupation&#39;</span>, <span class="st">&#39;relationship&#39;</span>,</span>
+<span id="cb7-2"><a href="#cb7-2"></a>             <span class="st">&#39;race&#39;</span>, <span class="st">&#39;sex&#39;</span>, <span class="st">&#39;capital_gain&#39;</span>, <span class="st">&#39;capital_loss&#39;</span>, <span class="st">&#39;hours_per_week&#39;</span>, <span class="st">&#39;native_country&#39;</span>, <span class="st">&#39;income&#39;</span>]</span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a>df.columns <span class="op">=</span> col_names</span>
+<span id="cb7-5"><a href="#cb7-5"></a></span>
+<span id="cb7-6"><a href="#cb7-6"></a>df.columns</span></code></pre></div>
+<div class="output execute_result" data-execution_count="8">
+<pre><code>Index([&#39;age&#39;, &#39;workclass&#39;, &#39;fnlwgt&#39;, &#39;education&#39;, &#39;education_num&#39;,
+       &#39;marital_status&#39;, &#39;occupation&#39;, &#39;relationship&#39;, &#39;race&#39;, &#39;sex&#39;,
+       &#39;capital_gain&#39;, &#39;capital_loss&#39;, &#39;hours_per_week&#39;, &#39;native_country&#39;,
+       &#39;income&#39;],
+      dtype=&#39;object&#39;)</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="9">
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>df.head()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="9">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>workclass</th>
+      <th>fnlwgt</th>
+      <th>education</th>
+      <th>education_num</th>
+      <th>marital_status</th>
+      <th>occupation</th>
+      <th>relationship</th>
+      <th>race</th>
+      <th>sex</th>
+      <th>capital_gain</th>
+      <th>capital_loss</th>
+      <th>hours_per_week</th>
+      <th>native_country</th>
+      <th>income</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>39</td>
+      <td>State-gov</td>
+      <td>77516</td>
+      <td>Bachelors</td>
+      <td>13</td>
+      <td>Never-married</td>
+      <td>Adm-clerical</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>2174</td>
+      <td>0</td>
+      <td>40</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>50</td>
+      <td>Self-emp-not-inc</td>
+      <td>83311</td>
+      <td>Bachelors</td>
+      <td>13</td>
+      <td>Married-civ-spouse</td>
+      <td>Exec-managerial</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>0</td>
+      <td>0</td>
+      <td>13</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>38</td>
+      <td>Private</td>
+      <td>215646</td>
+      <td>HS-grad</td>
+      <td>9</td>
+      <td>Divorced</td>
+      <td>Handlers-cleaners</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>0</td>
+      <td>0</td>
+      <td>40</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>53</td>
+      <td>Private</td>
+      <td>234721</td>
+      <td>11th</td>
+      <td>7</td>
+      <td>Married-civ-spouse</td>
+      <td>Handlers-cleaners</td>
+      <td>Husband</td>
+      <td>Black</td>
+      <td>Male</td>
+      <td>0</td>
+      <td>0</td>
+      <td>40</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>28</td>
+      <td>Private</td>
+      <td>338409</td>
+      <td>Bachelors</td>
+      <td>13</td>
+      <td>Married-civ-spouse</td>
+      <td>Prof-specialty</td>
+      <td>Wife</td>
+      <td>Black</td>
+      <td>Female</td>
+      <td>0</td>
+      <td>0</td>
+      <td>40</td>
+      <td>Cuba</td>
+      <td>&lt;=50K</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="10">
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>df.info()</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 32561 entries, 0 to 32560
+Data columns (total 15 columns):
+ #   Column          Non-Null Count  Dtype 
+---  ------          --------------  ----- 
+ 0   age             32561 non-null  int64 
+ 1   workclass       32561 non-null  object
+ 2   fnlwgt          32561 non-null  int64 
+ 3   education       32561 non-null  object
+ 4   education_num   32561 non-null  int64 
+ 5   marital_status  32561 non-null  object
+ 6   occupation      32561 non-null  object
+ 7   relationship    32561 non-null  object
+ 8   race            32561 non-null  object
+ 9   sex             32561 non-null  object
+ 10  capital_gain    32561 non-null  int64 
+ 11  capital_loss    32561 non-null  int64 
+ 12  hours_per_week  32561 non-null  int64 
+ 13  native_country  32561 non-null  object
+ 14  income          32561 non-null  object
+dtypes: int64(6), object(9)
+memory usage: 3.7+ MB
+</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="12">
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>categorical <span class="op">=</span> [var <span class="cf">for</span> var <span class="kw">in</span> df.columns <span class="cf">if</span> df[var].dtype<span class="op">==</span><span class="st">&#39;O&#39;</span>]</span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="bu">print</span>(<span class="st">&#39;There are </span><span class="sc">{}</span><span class="st"> categorical variables</span><span class="ch">\n</span><span class="st">&#39;</span>.<span class="bu">format</span>(<span class="bu">len</span>(categorical)))</span>
+<span id="cb12-4"><a href="#cb12-4"></a></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="bu">print</span>(<span class="st">&#39;The categorical variables are :</span><span class="ch">\n\n</span><span class="st">&#39;</span>, categorical)</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>There are 9 categorical variables
+
+The categorical variables are :
+
+ [&#39;workclass&#39;, &#39;education&#39;, &#39;marital_status&#39;, &#39;occupation&#39;, &#39;relationship&#39;, &#39;race&#39;, &#39;sex&#39;, &#39;native_country&#39;, &#39;income&#39;]
+</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="13">
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>df[categorical].head()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="13">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>workclass</th>
+      <th>education</th>
+      <th>marital_status</th>
+      <th>occupation</th>
+      <th>relationship</th>
+      <th>race</th>
+      <th>sex</th>
+      <th>native_country</th>
+      <th>income</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>State-gov</td>
+      <td>Bachelors</td>
+      <td>Never-married</td>
+      <td>Adm-clerical</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Self-emp-not-inc</td>
+      <td>Bachelors</td>
+      <td>Married-civ-spouse</td>
+      <td>Exec-managerial</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Private</td>
+      <td>HS-grad</td>
+      <td>Divorced</td>
+      <td>Handlers-cleaners</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Private</td>
+      <td>11th</td>
+      <td>Married-civ-spouse</td>
+      <td>Handlers-cleaners</td>
+      <td>Husband</td>
+      <td>Black</td>
+      <td>Male</td>
+      <td>United-States</td>
+      <td>&lt;=50K</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Private</td>
+      <td>Bachelors</td>
+      <td>Married-civ-spouse</td>
+      <td>Prof-specialty</td>
+      <td>Wife</td>
+      <td>Black</td>
+      <td>Female</td>
+      <td>Cuba</td>
+      <td>&lt;=50K</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="14">
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>df[categorical].isnull().<span class="bu">sum</span>()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="14">
+<pre><code>workclass         0
+education         0
+marital_status    0
+occupation        0
+relationship      0
+race              0
+sex               0
+native_country    0
+income            0
+dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="15">
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a><span class="cf">for</span> var <span class="kw">in</span> categorical: </span>
+<span id="cb17-2"><a href="#cb17-2"></a>    </span>
+<span id="cb17-3"><a href="#cb17-3"></a>    <span class="bu">print</span>(df[var].value_counts())</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>Private             22696
+Self-emp-not-inc     2541
+Local-gov            2093
+?                    1836
+State-gov            1298
+Self-emp-inc         1116
+Federal-gov           960
+Without-pay            14
+Never-worked            7
+Name: workclass, dtype: int64
+HS-grad         10501
+Some-college     7291
+Bachelors        5355
+Masters          1723
+Assoc-voc        1382
+11th             1175
+Assoc-acdm       1067
+10th              933
+7th-8th           646
+Prof-school       576
+9th               514
+12th              433
+Doctorate         413
+5th-6th           333
+1st-4th           168
+Preschool          51
+Name: education, dtype: int64
+Married-civ-spouse       14976
+Never-married            10683
+Divorced                  4443
+Separated                 1025
+Widowed                    993
+Married-spouse-absent      418
+Married-AF-spouse           23
+Name: marital_status, dtype: int64
+Prof-specialty       4140
+Craft-repair         4099
+Exec-managerial      4066
+Adm-clerical         3770
+Sales                3650
+Other-service        3295
+Machine-op-inspct    2002
+?                    1843
+Transport-moving     1597
+Handlers-cleaners    1370
+Farming-fishing       994
+Tech-support          928
+Protective-serv       649
+Priv-house-serv       149
+Armed-Forces            9
+Name: occupation, dtype: int64
+Husband           13193
+Not-in-family      8305
+Own-child          5068
+Unmarried          3446
+Wife               1568
+Other-relative      981
+Name: relationship, dtype: int64
+White                 27816
+Black                  3124
+Asian-Pac-Islander     1039
+Amer-Indian-Eskimo      311
+Other                   271
+Name: race, dtype: int64
+Male      21790
+Female    10771
+Name: sex, dtype: int64
+United-States                 29170
+Mexico                          643
+?                               583
+Philippines                     198
+Germany                         137
+Canada                          121
+Puerto-Rico                     114
+El-Salvador                     106
+India                           100
+Cuba                             95
+England                          90
+Jamaica                          81
+South                            80
+China                            75
+Italy                            73
+Dominican-Republic               70
+Vietnam                          67
+Guatemala                        64
+Japan                            62
+Poland                           60
+Columbia                         59
+Taiwan                           51
+Haiti                            44
+Iran                             43
+Portugal                         37
+Nicaragua                        34
+Peru                             31
+France                           29
+Greece                           29
+Ecuador                          28
+Ireland                          24
+Hong                             20
+Cambodia                         19
+Trinadad&amp;Tobago                  19
+Laos                             18
+Thailand                         18
+Yugoslavia                       16
+Outlying-US(Guam-USVI-etc)       14
+Honduras                         13
+Hungary                          13
+Scotland                         12
+Holand-Netherlands                1
+Name: native_country, dtype: int64
+&lt;=50K    24720
+&gt;50K      7841
+Name: income, dtype: int64
+</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="16">
+<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a><span class="cf">for</span> var <span class="kw">in</span> categorical: </span>
+<span id="cb19-2"><a href="#cb19-2"></a>    </span>
+<span id="cb19-3"><a href="#cb19-3"></a>    <span class="bu">print</span>(df[var].value_counts()<span class="op">/</span>np.<span class="bu">float</span>(<span class="bu">len</span>(df)))</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>Private             0.697030
+Self-emp-not-inc    0.078038
+Local-gov           0.064279
+?                   0.056386
+State-gov           0.039864
+Self-emp-inc        0.034274
+Federal-gov         0.029483
+Without-pay         0.000430
+Never-worked        0.000215
+Name: workclass, dtype: float64
+HS-grad         0.322502
+Some-college    0.223918
+Bachelors       0.164461
+Masters         0.052916
+Assoc-voc       0.042443
+11th            0.036086
+Assoc-acdm      0.032769
+10th            0.028654
+7th-8th         0.019840
+Prof-school     0.017690
+9th             0.015786
+12th            0.013298
+Doctorate       0.012684
+5th-6th         0.010227
+1st-4th         0.005160
+Preschool       0.001566
+Name: education, dtype: float64
+Married-civ-spouse       0.459937
+Never-married            0.328092
+Divorced                 0.136452
+Separated                0.031479
+Widowed                  0.030497
+Married-spouse-absent    0.012837
+Married-AF-spouse        0.000706
+Name: marital_status, dtype: float64
+Prof-specialty       0.127146
+Craft-repair         0.125887
+Exec-managerial      0.124873
+Adm-clerical         0.115783
+Sales                0.112097
+Other-service        0.101195
+Machine-op-inspct    0.061485
+?                    0.056601
+Transport-moving     0.049046
+Handlers-cleaners    0.042075
+Farming-fishing      0.030527
+Tech-support         0.028500
+Protective-serv      0.019932
+Priv-house-serv      0.004576
+Armed-Forces         0.000276
+Name: occupation, dtype: float64
+Husband           0.405178
+Not-in-family     0.255060
+Own-child         0.155646
+Unmarried         0.105832
+Wife              0.048156
+Other-relative    0.030128
+Name: relationship, dtype: float64
+White                 0.854274
+Black                 0.095943
+Asian-Pac-Islander    0.031909
+Amer-Indian-Eskimo    0.009551
+Other                 0.008323
+Name: race, dtype: float64
+Male      0.669205
+Female    0.330795
+Name: sex, dtype: float64
+United-States                 0.895857
+Mexico                        0.019748
+?                             0.017905
+Philippines                   0.006081
+Germany                       0.004207
+Canada                        0.003716
+Puerto-Rico                   0.003501
+El-Salvador                   0.003255
+India                         0.003071
+Cuba                          0.002918
+England                       0.002764
+Jamaica                       0.002488
+South                         0.002457
+China                         0.002303
+Italy                         0.002242
+Dominican-Republic            0.002150
+Vietnam                       0.002058
+Guatemala                     0.001966
+Japan                         0.001904
+Poland                        0.001843
+Columbia                      0.001812
+Taiwan                        0.001566
+Haiti                         0.001351
+Iran                          0.001321
+Portugal                      0.001136
+Nicaragua                     0.001044
+Peru                          0.000952
+France                        0.000891
+Greece                        0.000891
+Ecuador                       0.000860
+Ireland                       0.000737
+Hong                          0.000614
+Cambodia                      0.000584
+Trinadad&amp;Tobago               0.000584
+Laos                          0.000553
+Thailand                      0.000553
+Yugoslavia                    0.000491
+Outlying-US(Guam-USVI-etc)    0.000430
+Honduras                      0.000399
+Hungary                       0.000399
+Scotland                      0.000369
+Holand-Netherlands            0.000031
+Name: native_country, dtype: float64
+&lt;=50K    0.75919
+&gt;50K     0.24081
+Name: income, dtype: float64
+</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="17">
+<div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>df.workclass.unique()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="17">
+<pre><code>array([&#39;State-gov&#39;, &#39;Self-emp-not-inc&#39;, &#39;Private&#39;, &#39;Federal-gov&#39;,
+       &#39;Local-gov&#39;, &#39;?&#39;, &#39;Self-emp-inc&#39;, &#39;Without-pay&#39;, &#39;Never-worked&#39;],
+      dtype=object)</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="18">
+<div class="sourceCode" id="cb23"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a>df.workclass.value_counts()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="18">
+<pre><code>Private             22696
+Self-emp-not-inc     2541
+Local-gov            2093
+?                    1836
+State-gov            1298
+Self-emp-inc         1116
+Federal-gov           960
+Without-pay            14
+Never-worked            7
+Name: workclass, dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="19">
+<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1"></a>df[<span class="st">&#39;workclass&#39;</span>].replace(<span class="st">&#39;?&#39;</span>, np.NaN, inplace<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="20">
+<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1"></a>df.workclass.value_counts()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="20">
+<pre><code>Private             22696
+Self-emp-not-inc     2541
+Local-gov            2093
+State-gov            1298
+Self-emp-inc         1116
+Federal-gov           960
+Without-pay            14
+Never-worked            7
+Name: workclass, dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="21">
+<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1"></a>df.occupation.value_counts()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="21">
+<pre><code>Prof-specialty       4140
+Craft-repair         4099
+Exec-managerial      4066
+Adm-clerical         3770
+Sales                3650
+Other-service        3295
+Machine-op-inspct    2002
+?                    1843
+Transport-moving     1597
+Handlers-cleaners    1370
+Farming-fishing       994
+Tech-support          928
+Protective-serv       649
+Priv-house-serv       149
+Armed-Forces            9
+Name: occupation, dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="22">
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1"></a>df[<span class="st">&#39;occupation&#39;</span>].replace(<span class="st">&#39;?&#39;</span>, np.NaN, inplace<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="23">
+<div class="sourceCode" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1"></a>df.occupation.value_counts()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="23">
+<pre><code>Prof-specialty       4140
+Craft-repair         4099
+Exec-managerial      4066
+Adm-clerical         3770
+Sales                3650
+Other-service        3295
+Machine-op-inspct    2002
+Transport-moving     1597
+Handlers-cleaners    1370
+Farming-fishing       994
+Tech-support          928
+Protective-serv       649
+Priv-house-serv       149
+Armed-Forces            9
+Name: occupation, dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="24">
+<div class="sourceCode" id="cb33"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1"></a>df.native_country.unique()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="24">
+<pre><code>array([&#39;United-States&#39;, &#39;Cuba&#39;, &#39;Jamaica&#39;, &#39;India&#39;, &#39;?&#39;, &#39;Mexico&#39;,
+       &#39;South&#39;, &#39;Puerto-Rico&#39;, &#39;Honduras&#39;, &#39;England&#39;, &#39;Canada&#39;, &#39;Germany&#39;,
+       &#39;Iran&#39;, &#39;Philippines&#39;, &#39;Italy&#39;, &#39;Poland&#39;, &#39;Columbia&#39;, &#39;Cambodia&#39;,
+       &#39;Thailand&#39;, &#39;Ecuador&#39;, &#39;Laos&#39;, &#39;Taiwan&#39;, &#39;Haiti&#39;, &#39;Portugal&#39;,
+       &#39;Dominican-Republic&#39;, &#39;El-Salvador&#39;, &#39;France&#39;, &#39;Guatemala&#39;,
+       &#39;China&#39;, &#39;Japan&#39;, &#39;Yugoslavia&#39;, &#39;Peru&#39;,
+       &#39;Outlying-US(Guam-USVI-etc)&#39;, &#39;Scotland&#39;, &#39;Trinadad&amp;Tobago&#39;,
+       &#39;Greece&#39;, &#39;Nicaragua&#39;, &#39;Vietnam&#39;, &#39;Hong&#39;, &#39;Ireland&#39;, &#39;Hungary&#39;,
+       &#39;Holand-Netherlands&#39;], dtype=object)</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="25">
+<div class="sourceCode" id="cb35"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1"></a>df.native_country.value_counts()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="25">
+<pre><code>United-States                 29170
+Mexico                          643
+?                               583
+Philippines                     198
+Germany                         137
+Canada                          121
+Puerto-Rico                     114
+El-Salvador                     106
+India                           100
+Cuba                             95
+England                          90
+Jamaica                          81
+South                            80
+China                            75
+Italy                            73
+Dominican-Republic               70
+Vietnam                          67
+Guatemala                        64
+Japan                            62
+Poland                           60
+Columbia                         59
+Taiwan                           51
+Haiti                            44
+Iran                             43
+Portugal                         37
+Nicaragua                        34
+Peru                             31
+France                           29
+Greece                           29
+Ecuador                          28
+Ireland                          24
+Hong                             20
+Cambodia                         19
+Trinadad&amp;Tobago                  19
+Laos                             18
+Thailand                         18
+Yugoslavia                       16
+Outlying-US(Guam-USVI-etc)       14
+Honduras                         13
+Hungary                          13
+Scotland                         12
+Holand-Netherlands                1
+Name: native_country, dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="26">
+<div class="sourceCode" id="cb37"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1"></a>df[<span class="st">&#39;native_country&#39;</span>].replace(<span class="st">&#39;?&#39;</span>, np.NaN, inplace<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="27">
+<div class="sourceCode" id="cb38"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1"></a>df.native_country.value_counts()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="27">
+<pre><code>United-States                 29170
+Mexico                          643
+Philippines                     198
+Germany                         137
+Canada                          121
+Puerto-Rico                     114
+El-Salvador                     106
+India                           100
+Cuba                             95
+England                          90
+Jamaica                          81
+South                            80
+China                            75
+Italy                            73
+Dominican-Republic               70
+Vietnam                          67
+Guatemala                        64
+Japan                            62
+Poland                           60
+Columbia                         59
+Taiwan                           51
+Haiti                            44
+Iran                             43
+Portugal                         37
+Nicaragua                        34
+Peru                             31
+France                           29
+Greece                           29
+Ecuador                          28
+Ireland                          24
+Hong                             20
+Cambodia                         19
+Trinadad&amp;Tobago                  19
+Laos                             18
+Thailand                         18
+Yugoslavia                       16
+Outlying-US(Guam-USVI-etc)       14
+Honduras                         13
+Hungary                          13
+Scotland                         12
+Holand-Netherlands                1
+Name: native_country, dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="28">
+<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1"></a>df[categorical].isnull().<span class="bu">sum</span>()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="28">
+<pre><code>workclass         1836
+education            0
+marital_status       0
+occupation        1843
+relationship         0
+race                 0
+sex                  0
+native_country     583
+income               0
+dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="29">
+<div class="sourceCode" id="cb42"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1"></a></span>
+<span id="cb42-2"><a href="#cb42-2"></a><span class="cf">for</span> var <span class="kw">in</span> categorical:</span>
+<span id="cb42-3"><a href="#cb42-3"></a>    </span>
+<span id="cb42-4"><a href="#cb42-4"></a>    <span class="bu">print</span>(var, <span class="st">&#39; contains &#39;</span>, <span class="bu">len</span>(df[var].unique()), <span class="st">&#39; labels&#39;</span>)</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>workclass  contains  9  labels
+education  contains  16  labels
+marital_status  contains  7  labels
+occupation  contains  15  labels
+relationship  contains  6  labels
+race  contains  5  labels
+sex  contains  2  labels
+native_country  contains  42  labels
+income  contains  2  labels
+</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="30">
+<div class="sourceCode" id="cb44"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1"></a>numerical <span class="op">=</span> [var <span class="cf">for</span> var <span class="kw">in</span> df.columns <span class="cf">if</span> df[var].dtype<span class="op">!=</span><span class="st">&#39;O&#39;</span>]</span>
+<span id="cb44-2"><a href="#cb44-2"></a></span>
+<span id="cb44-3"><a href="#cb44-3"></a><span class="bu">print</span>(<span class="st">&#39;There are </span><span class="sc">{}</span><span class="st"> numerical variables</span><span class="ch">\n</span><span class="st">&#39;</span>.<span class="bu">format</span>(<span class="bu">len</span>(numerical)))</span>
+<span id="cb44-4"><a href="#cb44-4"></a></span>
+<span id="cb44-5"><a href="#cb44-5"></a><span class="bu">print</span>(<span class="st">&#39;The numerical variables are :&#39;</span>, numerical)</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>There are 6 numerical variables
+
+The numerical variables are : [&#39;age&#39;, &#39;fnlwgt&#39;, &#39;education_num&#39;, &#39;capital_gain&#39;, &#39;capital_loss&#39;, &#39;hours_per_week&#39;]
+</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="31">
+<div class="sourceCode" id="cb46"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1"></a>df[numerical].head()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="31">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>fnlwgt</th>
+      <th>education_num</th>
+      <th>capital_gain</th>
+      <th>capital_loss</th>
+      <th>hours_per_week</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>39</td>
+      <td>77516</td>
+      <td>13</td>
+      <td>2174</td>
+      <td>0</td>
+      <td>40</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>50</td>
+      <td>83311</td>
+      <td>13</td>
+      <td>0</td>
+      <td>0</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>38</td>
+      <td>215646</td>
+      <td>9</td>
+      <td>0</td>
+      <td>0</td>
+      <td>40</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>53</td>
+      <td>234721</td>
+      <td>7</td>
+      <td>0</td>
+      <td>0</td>
+      <td>40</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>28</td>
+      <td>338409</td>
+      <td>13</td>
+      <td>0</td>
+      <td>0</td>
+      <td>40</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="32">
+<div class="sourceCode" id="cb47"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1"></a>df[numerical].isnull().<span class="bu">sum</span>()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="32">
+<pre><code>age               0
+fnlwgt            0
+education_num     0
+capital_gain      0
+capital_loss      0
+hours_per_week    0
+dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="33">
+<div class="sourceCode" id="cb49"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1"></a>X <span class="op">=</span> df.drop([<span class="st">&#39;income&#39;</span>], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb49-2"><a href="#cb49-2"></a></span>
+<span id="cb49-3"><a href="#cb49-3"></a>y <span class="op">=</span> df[<span class="st">&#39;income&#39;</span>]</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="34">
+<div class="sourceCode" id="cb50"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb50-2"><a href="#cb50-2"></a></span>
+<span id="cb50-3"><a href="#cb50-3"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size <span class="op">=</span> <span class="fl">0.3</span>, random_state <span class="op">=</span> <span class="dv">0</span>)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="35">
+<div class="sourceCode" id="cb51"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1"></a>X_train.shape, X_test.shape</span></code></pre></div>
+<div class="output execute_result" data-execution_count="35">
+<pre><code>((22792, 14), (9769, 14))</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="36">
+<div class="sourceCode" id="cb53"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1"></a>X_train.dtypes</span></code></pre></div>
+<div class="output execute_result" data-execution_count="36">
+<pre><code>age                int64
+workclass         object
+fnlwgt             int64
+education         object
+education_num      int64
+marital_status    object
+occupation        object
+relationship      object
+race              object
+sex               object
+capital_gain       int64
+capital_loss       int64
+hours_per_week     int64
+native_country    object
+dtype: object</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="37">
+<div class="sourceCode" id="cb55"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1"></a>categorical <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> X_train.columns <span class="cf">if</span> X_train[col].dtypes <span class="op">==</span> <span class="st">&#39;O&#39;</span>]</span>
+<span id="cb55-2"><a href="#cb55-2"></a></span>
+<span id="cb55-3"><a href="#cb55-3"></a>categorical</span></code></pre></div>
+<div class="output execute_result" data-execution_count="37">
+<pre><code>[&#39;workclass&#39;,
+ &#39;education&#39;,
+ &#39;marital_status&#39;,
+ &#39;occupation&#39;,
+ &#39;relationship&#39;,
+ &#39;race&#39;,
+ &#39;sex&#39;,
+ &#39;native_country&#39;]</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="38">
+<div class="sourceCode" id="cb57"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1"></a>numerical <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> X_train.columns <span class="cf">if</span> X_train[col].dtypes <span class="op">!=</span> <span class="st">&#39;O&#39;</span>]</span>
+<span id="cb57-2"><a href="#cb57-2"></a></span>
+<span id="cb57-3"><a href="#cb57-3"></a>numerical</span></code></pre></div>
+<div class="output execute_result" data-execution_count="38">
+<pre><code>[&#39;age&#39;,
+ &#39;fnlwgt&#39;,
+ &#39;education_num&#39;,
+ &#39;capital_gain&#39;,
+ &#39;capital_loss&#39;,
+ &#39;hours_per_week&#39;]</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="39">
+<div class="sourceCode" id="cb59"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1"></a>X_train[categorical].isnull().mean()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="39">
+<pre><code>workclass         0.055985
+education         0.000000
+marital_status    0.000000
+occupation        0.056072
+relationship      0.000000
+race              0.000000
+sex               0.000000
+native_country    0.018164
+dtype: float64</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="40">
+<div class="sourceCode" id="cb61"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1"></a><span class="cf">for</span> col <span class="kw">in</span> categorical:</span>
+<span id="cb61-2"><a href="#cb61-2"></a>    <span class="cf">if</span> X_train[col].isnull().mean()<span class="op">&gt;</span><span class="dv">0</span>:</span>
+<span id="cb61-3"><a href="#cb61-3"></a>        <span class="bu">print</span>(col, (X_train[col].isnull().mean()))</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>workclass 0.055984555984555984
+occupation 0.05607230607230607
+native_country 0.018164268164268166
+</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="41">
+<div class="sourceCode" id="cb63"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1"></a><span class="cf">for</span> df2 <span class="kw">in</span> [X_train, X_test]:</span>
+<span id="cb63-2"><a href="#cb63-2"></a>    df2[<span class="st">&#39;workclass&#39;</span>].fillna(X_train[<span class="st">&#39;workclass&#39;</span>].mode()[<span class="dv">0</span>], inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb63-3"><a href="#cb63-3"></a>    df2[<span class="st">&#39;occupation&#39;</span>].fillna(X_train[<span class="st">&#39;occupation&#39;</span>].mode()[<span class="dv">0</span>], inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb63-4"><a href="#cb63-4"></a>    df2[<span class="st">&#39;native_country&#39;</span>].fillna(X_train[<span class="st">&#39;native_country&#39;</span>].mode()[<span class="dv">0</span>], inplace<span class="op">=</span><span class="va">True</span>) </span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="43">
+<div class="sourceCode" id="cb64"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1"></a>X_train[categorical].isnull().<span class="bu">sum</span>()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="43">
+<pre><code>workclass         0
+education         0
+marital_status    0
+occupation        0
+relationship      0
+race              0
+sex               0
+native_country    0
+dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="44">
+<div class="sourceCode" id="cb66"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1"></a></span>
+<span id="cb66-2"><a href="#cb66-2"></a>X_train.isnull().<span class="bu">sum</span>()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="44">
+<pre><code>age               0
+workclass         0
+fnlwgt            0
+education         0
+education_num     0
+marital_status    0
+occupation        0
+relationship      0
+race              0
+sex               0
+capital_gain      0
+capital_loss      0
+hours_per_week    0
+native_country    0
+dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="45">
+<div class="sourceCode" id="cb68"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1"></a>X_test.isnull().<span class="bu">sum</span>()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="45">
+<pre><code>age               0
+workclass         0
+fnlwgt            0
+education         0
+education_num     0
+marital_status    0
+occupation        0
+relationship      0
+race              0
+sex               0
+capital_gain      0
+capital_loss      0
+hours_per_week    0
+native_country    0
+dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="46">
+<div class="sourceCode" id="cb70"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1"></a>categorical</span></code></pre></div>
+<div class="output execute_result" data-execution_count="46">
+<pre><code>[&#39;workclass&#39;,
+ &#39;education&#39;,
+ &#39;marital_status&#39;,
+ &#39;occupation&#39;,
+ &#39;relationship&#39;,
+ &#39;race&#39;,
+ &#39;sex&#39;,
+ &#39;native_country&#39;]</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="47">
+<div class="sourceCode" id="cb72"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1"></a>X_train[categorical].head()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="47">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>workclass</th>
+      <th>education</th>
+      <th>marital_status</th>
+      <th>occupation</th>
+      <th>relationship</th>
+      <th>race</th>
+      <th>sex</th>
+      <th>native_country</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>32098</th>
+      <td>Private</td>
+      <td>HS-grad</td>
+      <td>Married-civ-spouse</td>
+      <td>Craft-repair</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>United-States</td>
+    </tr>
+    <tr>
+      <th>25206</th>
+      <td>State-gov</td>
+      <td>HS-grad</td>
+      <td>Divorced</td>
+      <td>Adm-clerical</td>
+      <td>Unmarried</td>
+      <td>White</td>
+      <td>Female</td>
+      <td>United-States</td>
+    </tr>
+    <tr>
+      <th>23491</th>
+      <td>Private</td>
+      <td>Some-college</td>
+      <td>Married-civ-spouse</td>
+      <td>Sales</td>
+      <td>Husband</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>United-States</td>
+    </tr>
+    <tr>
+      <th>12367</th>
+      <td>Private</td>
+      <td>HS-grad</td>
+      <td>Never-married</td>
+      <td>Craft-repair</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>Guatemala</td>
+    </tr>
+    <tr>
+      <th>7054</th>
+      <td>Private</td>
+      <td>7th-8th</td>
+      <td>Never-married</td>
+      <td>Craft-repair</td>
+      <td>Not-in-family</td>
+      <td>White</td>
+      <td>Male</td>
+      <td>Germany</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="48">
+<div class="sourceCode" id="cb73"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1"></a><span class="im">import</span> category_encoders <span class="im">as</span> ce</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="49">
+<div class="sourceCode" id="cb74"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1"></a>encoder <span class="op">=</span> ce.OneHotEncoder(cols<span class="op">=</span>[<span class="st">&#39;workclass&#39;</span>, <span class="st">&#39;education&#39;</span>, <span class="st">&#39;marital_status&#39;</span>, <span class="st">&#39;occupation&#39;</span>, <span class="st">&#39;relationship&#39;</span>, </span>
+<span id="cb74-2"><a href="#cb74-2"></a>                                 <span class="st">&#39;race&#39;</span>, <span class="st">&#39;sex&#39;</span>, <span class="st">&#39;native_country&#39;</span>])</span>
+<span id="cb74-3"><a href="#cb74-3"></a></span>
+<span id="cb74-4"><a href="#cb74-4"></a>X_train <span class="op">=</span> encoder.fit_transform(X_train)</span>
+<span id="cb74-5"><a href="#cb74-5"></a></span>
+<span id="cb74-6"><a href="#cb74-6"></a>X_test <span class="op">=</span> encoder.transform(X_test)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="50">
+<div class="sourceCode" id="cb75"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1"></a>X_train.head()</span></code></pre></div>
+<div class="output execute_result" data-execution_count="50">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>workclass_1</th>
+      <th>workclass_2</th>
+      <th>workclass_3</th>
+      <th>workclass_4</th>
+      <th>workclass_5</th>
+      <th>workclass_6</th>
+      <th>workclass_7</th>
+      <th>workclass_8</th>
+      <th>fnlwgt</th>
+      <th>...</th>
+      <th>native_country_32</th>
+      <th>native_country_33</th>
+      <th>native_country_34</th>
+      <th>native_country_35</th>
+      <th>native_country_36</th>
+      <th>native_country_37</th>
+      <th>native_country_38</th>
+      <th>native_country_39</th>
+      <th>native_country_40</th>
+      <th>native_country_41</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>32098</th>
+      <td>45</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>170871</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>25206</th>
+      <td>47</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>108890</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>23491</th>
+      <td>48</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>187505</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>12367</th>
+      <td>29</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>145592</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>7054</th>
+      <td>23</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>203003</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 105 columns</p>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="51">
+<div class="sourceCode" id="cb76"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1"></a>X_train.shape</span></code></pre></div>
+<div class="output execute_result" data-execution_count="51">
+<pre><code>(22792, 105)</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="52">
+<div class="sourceCode" id="cb78"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1"></a>X_test.shape</span></code></pre></div>
+<div class="output execute_result" data-execution_count="52">
+<pre><code>(9769, 105)</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="53">
+<div class="sourceCode" id="cb80"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1"></a><span class="co"># train a Gaussian Naive Bayes classifier on the training set</span></span>
+<span id="cb80-2"><a href="#cb80-2"></a><span class="im">from</span> sklearn.naive_bayes <span class="im">import</span> GaussianNB</span>
+<span id="cb80-3"><a href="#cb80-3"></a></span>
+<span id="cb80-4"><a href="#cb80-4"></a></span>
+<span id="cb80-5"><a href="#cb80-5"></a><span class="co"># instantiate the model</span></span>
+<span id="cb80-6"><a href="#cb80-6"></a>gnb <span class="op">=</span> GaussianNB()</span>
+<span id="cb80-7"><a href="#cb80-7"></a></span>
+<span id="cb80-8"><a href="#cb80-8"></a></span>
+<span id="cb80-9"><a href="#cb80-9"></a><span class="co"># fit the model</span></span>
+<span id="cb80-10"><a href="#cb80-10"></a>gnb.fit(X_train, y_train)</span></code></pre></div>
+<div class="output execute_result" data-execution_count="53">
+<pre><code>GaussianNB()</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="54">
+<div class="sourceCode" id="cb82"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb82-1"><a href="#cb82-1"></a>y_pred <span class="op">=</span> gnb.predict(X_test)</span>
+<span id="cb82-2"><a href="#cb82-2"></a></span>
+<span id="cb82-3"><a href="#cb82-3"></a>y_pred</span></code></pre></div>
+<div class="output execute_result" data-execution_count="54">
+<pre><code>array([&#39;&lt;=50K&#39;, &#39;&lt;=50K&#39;, &#39;&lt;=50K&#39;, ..., &#39;&gt;50K&#39;, &#39;&lt;=50K&#39;, &#39;&lt;=50K&#39;],
+      dtype=&#39;&lt;U5&#39;)</code></pre>
+</div>
+</div>
+<div class="cell code">
+<div class="sourceCode" id="cb84"><pre class="sourceCode python"><code class="sourceCode python"></code></pre></div>
+</div>
+</body>
+</html>

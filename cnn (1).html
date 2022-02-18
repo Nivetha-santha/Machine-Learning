@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>76056</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div class="cell code" data-execution_count="5">
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> numpy <span class="im">as</span> np <span class="co"># linear algebra</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="im">import</span> pandas <span class="im">as</span> pd <span class="co"># data processing, CSV file I/O (e.g. pd.read_csv)</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co"># import warnings</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="im">import</span> warnings</span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co"># filter warnings</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>warnings.filterwarnings(<span class="st">&#39;ignore&#39;</span>)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="14">
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>train <span class="op">=</span> pd.read_csv(<span class="st">&quot;C:/Users/W2S/Downloads/DL_Datasets/train.csv&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="bu">print</span>(train.shape)</span>
+<span id="cb2-3"><a href="#cb2-3"></a>train.head()</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>(42000, 785)
+</code></pre>
+</div>
+<div class="output execute_result" data-execution_count="14">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>label</th>
+      <th>pixel0</th>
+      <th>pixel1</th>
+      <th>pixel2</th>
+      <th>pixel3</th>
+      <th>pixel4</th>
+      <th>pixel5</th>
+      <th>pixel6</th>
+      <th>pixel7</th>
+      <th>pixel8</th>
+      <th>...</th>
+      <th>pixel774</th>
+      <th>pixel775</th>
+      <th>pixel776</th>
+      <th>pixel777</th>
+      <th>pixel778</th>
+      <th>pixel779</th>
+      <th>pixel780</th>
+      <th>pixel781</th>
+      <th>pixel782</th>
+      <th>pixel783</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 785 columns</p>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="21">
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>test <span class="op">=</span> pd.read_csv(<span class="st">&quot;C:/Users/W2S/Downloads/DL_Datasets/test.csv&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="bu">print</span>(test.shape)</span>
+<span id="cb4-3"><a href="#cb4-3"></a>test.head()</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>(28000, 784)
+</code></pre>
+</div>
+<div class="output execute_result" data-execution_count="21">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pixel0</th>
+      <th>pixel1</th>
+      <th>pixel2</th>
+      <th>pixel3</th>
+      <th>pixel4</th>
+      <th>pixel5</th>
+      <th>pixel6</th>
+      <th>pixel7</th>
+      <th>pixel8</th>
+      <th>pixel9</th>
+      <th>...</th>
+      <th>pixel774</th>
+      <th>pixel775</th>
+      <th>pixel776</th>
+      <th>pixel777</th>
+      <th>pixel778</th>
+      <th>pixel779</th>
+      <th>pixel780</th>
+      <th>pixel781</th>
+      <th>pixel782</th>
+      <th>pixel783</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 784 columns</p>
+</div>
+</div>
+</div>
+<div class="cell code" data-execution_count="15">
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>Y_train <span class="op">=</span> train[<span class="st">&quot;label&quot;</span>]</span>
+<span id="cb6-2"><a href="#cb6-2"></a></span>
+<span id="cb6-3"><a href="#cb6-3"></a>X_train <span class="op">=</span> train.drop(labels <span class="op">=</span> [<span class="st">&quot;label&quot;</span>],axis <span class="op">=</span> <span class="dv">1</span>)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="22">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Normalize the data</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>X_train <span class="op">=</span> X_train <span class="op">/</span> <span class="fl">255.0</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>test <span class="op">=</span> test <span class="op">/</span> <span class="fl">255.0</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="bu">print</span>(<span class="st">&quot;x_train shape: &quot;</span>,X_train.shape)</span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="bu">print</span>(<span class="st">&quot;test shape: &quot;</span>,test.shape)</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>x_train shape:  (42000, 784)
+test shape:  (28000, 784)
+</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="23">
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Reshape</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>X_train <span class="op">=</span> X_train.values.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">28</span>,<span class="dv">28</span>,<span class="dv">1</span>)</span>
+<span id="cb9-3"><a href="#cb9-3"></a>test <span class="op">=</span> test.values.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">28</span>,<span class="dv">28</span>,<span class="dv">1</span>)</span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="bu">print</span>(<span class="st">&quot;x_train shape: &quot;</span>,X_train.shape)</span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="bu">print</span>(<span class="st">&quot;test shape: &quot;</span>,test.shape)</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>x_train shape:  (42000, 28, 28, 1)
+test shape:  (28000, 28, 28, 1)
+</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="25">
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="im">from</span> keras.utils.np_utils <span class="im">import</span> to_categorical <span class="co"># convert to one-hot-encoding</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>Y_train <span class="op">=</span> to_categorical(Y_train, num_classes <span class="op">=</span> <span class="dv">10</span>)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="26">
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb12-2"><a href="#cb12-2"></a>X_train, X_val, Y_train, Y_val <span class="op">=</span> train_test_split(X_train, Y_train, test_size <span class="op">=</span> <span class="fl">0.1</span>, random_state<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="bu">print</span>(<span class="st">&quot;x_train shape&quot;</span>,X_train.shape)</span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="bu">print</span>(<span class="st">&quot;x_test shape&quot;</span>,X_val.shape)</span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="bu">print</span>(<span class="st">&quot;y_train shape&quot;</span>,Y_train.shape)</span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="bu">print</span>(<span class="st">&quot;y_test shape&quot;</span>,Y_val.shape)</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>x_train shape (37800, 28, 28, 1)
+x_test shape (4200, 28, 28, 1)
+y_train shape (37800, 10, 10)
+y_test shape (4200, 10, 10)
+</code></pre>
+</div>
+</div>
+<div class="cell code" data-execution_count="29">
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># plt.imshow(X_train[2][:,:,0],cmap=&#39;gray&#39;)</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="co"># plt.show()</span></span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="49">
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix</span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="im">import</span> itertools</span>
+<span id="cb15-3"><a href="#cb15-3"></a></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="im">from</span> keras.utils.np_utils <span class="im">import</span> to_categorical <span class="co"># convert to one-hot-encoding</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="im">from</span> keras.models <span class="im">import</span> Sequential</span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="im">from</span> keras.layers <span class="im">import</span> Dense, Dropout, Flatten, Conv2D, MaxPool2D</span>
+<span id="cb15-7"><a href="#cb15-7"></a><span class="co"># from tensorflow.keras.optimizers import RMSprop</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a><span class="im">from</span> tensorflow.keras.optimizers <span class="im">import</span> RMSprop,Adam</span>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="im">from</span> keras.preprocessing.image <span class="im">import</span> ImageDataGenerator</span>
+<span id="cb15-10"><a href="#cb15-10"></a><span class="im">from</span> keras.callbacks <span class="im">import</span> ReduceLROnPlateau</span>
+<span id="cb15-11"><a href="#cb15-11"></a></span>
+<span id="cb15-12"><a href="#cb15-12"></a>model <span class="op">=</span> Sequential()</span>
+<span id="cb15-13"><a href="#cb15-13"></a><span class="co">#</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a>model.add(Conv2D(filters <span class="op">=</span> <span class="dv">8</span>, kernel_size <span class="op">=</span> (<span class="dv">5</span>,<span class="dv">5</span>),padding <span class="op">=</span> <span class="st">&#39;Same&#39;</span>, </span>
+<span id="cb15-15"><a href="#cb15-15"></a>                 activation <span class="op">=</span><span class="st">&#39;relu&#39;</span>, input_shape <span class="op">=</span> (<span class="dv">28</span>,<span class="dv">28</span>,<span class="dv">1</span>)))</span>
+<span id="cb15-16"><a href="#cb15-16"></a>model.add(MaxPool2D(pool_size<span class="op">=</span>(<span class="dv">2</span>,<span class="dv">2</span>)))</span>
+<span id="cb15-17"><a href="#cb15-17"></a>model.add(Dropout(<span class="fl">0.25</span>))</span>
+<span id="cb15-18"><a href="#cb15-18"></a><span class="co">#</span></span>
+<span id="cb15-19"><a href="#cb15-19"></a>model.add(Conv2D(filters <span class="op">=</span> <span class="dv">16</span>, kernel_size <span class="op">=</span> (<span class="dv">3</span>,<span class="dv">3</span>),padding <span class="op">=</span> <span class="st">&#39;Same&#39;</span>, </span>
+<span id="cb15-20"><a href="#cb15-20"></a>                 activation <span class="op">=</span><span class="st">&#39;relu&#39;</span>))</span>
+<span id="cb15-21"><a href="#cb15-21"></a>model.add(MaxPool2D(pool_size<span class="op">=</span>(<span class="dv">2</span>,<span class="dv">2</span>), strides<span class="op">=</span>(<span class="dv">2</span>,<span class="dv">2</span>)))</span>
+<span id="cb15-22"><a href="#cb15-22"></a>model.add(Dropout(<span class="fl">0.25</span>))</span>
+<span id="cb15-23"><a href="#cb15-23"></a><span class="co"># fully connected</span></span>
+<span id="cb15-24"><a href="#cb15-24"></a>model.add(Flatten())</span>
+<span id="cb15-25"><a href="#cb15-25"></a>model.add(Dense(<span class="dv">256</span>, activation <span class="op">=</span> <span class="st">&quot;relu&quot;</span>))</span>
+<span id="cb15-26"><a href="#cb15-26"></a>model.add(Dropout(<span class="fl">0.5</span>))</span>
+<span id="cb15-27"><a href="#cb15-27"></a>model.add(Dense(<span class="dv">10</span>, activation <span class="op">=</span> <span class="st">&quot;softmax&quot;</span>))</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="50">
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>optimizer <span class="op">=</span> Adam(lr<span class="op">=</span><span class="fl">0.001</span>, beta_1<span class="op">=</span><span class="fl">0.9</span>, beta_2<span class="op">=</span><span class="fl">0.999</span>)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="51">
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>model.<span class="bu">compile</span>(optimizer <span class="op">=</span> optimizer , loss <span class="op">=</span> <span class="st">&quot;categorical_crossentropy&quot;</span>, metrics<span class="op">=</span>[<span class="st">&quot;accuracy&quot;</span>])</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="52">
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>epochs <span class="op">=</span> <span class="dv">10</span>  <span class="co"># for better result increase the epochs</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>batch_size <span class="op">=</span> <span class="dv">250</span></span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="58">
+<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># data augmentation</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>datagen <span class="op">=</span> ImageDataGenerator(</span>
+<span id="cb19-3"><a href="#cb19-3"></a>        featurewise_center<span class="op">=</span><span class="va">False</span>,  <span class="co"># set input mean to 0 over the dataset</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a>        samplewise_center<span class="op">=</span><span class="va">False</span>,  <span class="co"># set each sample mean to 0</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a>        featurewise_std_normalization<span class="op">=</span><span class="va">False</span>,  <span class="co"># divide inputs by std of the dataset</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a>        samplewise_std_normalization<span class="op">=</span><span class="va">False</span>,  <span class="co"># divide each input by its std</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a>        zca_whitening<span class="op">=</span><span class="va">False</span>,  <span class="co"># dimesion reduction</span></span>
+<span id="cb19-8"><a href="#cb19-8"></a>        rotation_range<span class="op">=</span><span class="dv">5</span>,  <span class="co"># randomly rotate images in the range 5 degrees</span></span>
+<span id="cb19-9"><a href="#cb19-9"></a>        zoom_range <span class="op">=</span> <span class="fl">0.1</span>, <span class="co"># Randomly zoom image 10%</span></span>
+<span id="cb19-10"><a href="#cb19-10"></a>        width_shift_range<span class="op">=</span><span class="fl">0.1</span>,  <span class="co"># randomly shift images horizontally 10%</span></span>
+<span id="cb19-11"><a href="#cb19-11"></a>        height_shift_range<span class="op">=</span><span class="fl">0.1</span>,  <span class="co"># randomly shift images vertically 10%</span></span>
+<span id="cb19-12"><a href="#cb19-12"></a>        horizontal_flip<span class="op">=</span><span class="va">False</span>,  <span class="co"># randomly flip images</span></span>
+<span id="cb19-13"><a href="#cb19-13"></a>        vertical_flip<span class="op">=</span><span class="va">False</span>)  <span class="co"># randomly flip images</span></span>
+<span id="cb19-14"><a href="#cb19-14"></a></span>
+<span id="cb19-15"><a href="#cb19-15"></a>datagen.fit(X_train)</span></code></pre></div>
+</div>
+<div class="cell code" data-execution_count="59">
+<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># Fit the model</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>history <span class="op">=</span> model.fit_generator(datagen.flow(X_train,Y_train, batch_size<span class="op">=</span>batch_size),</span>
+<span id="cb20-3"><a href="#cb20-3"></a>                              epochs <span class="op">=</span> epochs, validation_data <span class="op">=</span> (X_val,Y_val), steps_per_epoch<span class="op">=</span>X_train.shape[<span class="dv">0</span>] )</span></code></pre></div>
+<div class="output stream stdout">
+<pre><code>Epoch 1/10
+</code></pre>
+</div>
+<div class="output error" data-ename="InvalidArgumentError" data-evalue=" Can not squeeze dim[2], expected a dimension of 1, got 10
+	 [[node categorical_crossentropy/remove_squeezable_dimensions/Squeeze
+ (defined at C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\utils\losses_utils.py:130)
+]] [Op:__inference_train_function_1038]
+
+Errors may have originated from an input operation.
+Input Source operations connected to node categorical_crossentropy/remove_squeezable_dimensions/Squeeze:
+In[0] IteratorGetNext (defined at C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\engine\training.py:866)
+
+Operation defined at: (most recent call last)
+&gt;&gt;&gt;   File &quot;C:\Program Files\Python39\lib\runpy.py&quot;, line 197, in _run_module_as_main
+&gt;&gt;&gt;     return _run_code(code, main_globals, None,
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Program Files\Python39\lib\runpy.py&quot;, line 87, in _run_code
+&gt;&gt;&gt;     exec(code, run_globals)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\ipykernel_launcher.py&quot;, line 16, in &lt;module&gt;
+&gt;&gt;&gt;     app.launch_new_instance()
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\traitlets\config\application.py&quot;, line 845, in launch_instance
+&gt;&gt;&gt;     app.start()
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\ipykernel\kernelapp.py&quot;, line 667, in start
+&gt;&gt;&gt;     self.io_loop.start()
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\tornado\platform\asyncio.py&quot;, line 199, in start
+&gt;&gt;&gt;     self.asyncio_loop.run_forever()
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Program Files\Python39\lib\asyncio\base_events.py&quot;, line 596, in run_forever
+&gt;&gt;&gt;     self._run_once()
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Program Files\Python39\lib\asyncio\base_events.py&quot;, line 1890, in _run_once
+&gt;&gt;&gt;     handle._run()
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Program Files\Python39\lib\asyncio\events.py&quot;, line 80, in _run
+&gt;&gt;&gt;     self._context.run(self._callback, *self._args)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\ipykernel\kernelbase.py&quot;, line 457, in dispatch_queue
+&gt;&gt;&gt;     await self.process_one()
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\ipykernel\kernelbase.py&quot;, line 446, in process_one
+&gt;&gt;&gt;     await dispatch(*args)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\ipykernel\kernelbase.py&quot;, line 353, in dispatch_shell
+&gt;&gt;&gt;     await result
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\ipykernel\kernelbase.py&quot;, line 648, in execute_request
+&gt;&gt;&gt;     reply_content = await reply_content
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\ipykernel\ipkernel.py&quot;, line 345, in do_execute
+&gt;&gt;&gt;     res = shell.run_cell(code, store_history=store_history, silent=silent)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\ipykernel\zmqshell.py&quot;, line 532, in run_cell
+&gt;&gt;&gt;     return super(ZMQInteractiveShell, self).run_cell(*args, **kwargs)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\IPython\core\interactiveshell.py&quot;, line 2898, in run_cell
+&gt;&gt;&gt;     result = self._run_cell(
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\IPython\core\interactiveshell.py&quot;, line 2944, in _run_cell
+&gt;&gt;&gt;     return runner(coro)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\IPython\core\async_helpers.py&quot;, line 68, in _pseudo_sync_runner
+&gt;&gt;&gt;     coro.send(None)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\IPython\core\interactiveshell.py&quot;, line 3169, in run_cell_async
+&gt;&gt;&gt;     has_raised = await self.run_ast_nodes(code_ast.body, cell_name,
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\IPython\core\interactiveshell.py&quot;, line 3361, in run_ast_nodes
+&gt;&gt;&gt;     if (await self.run_code(code, result,  async_=asy)):
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\IPython\core\interactiveshell.py&quot;, line 3441, in run_code
+&gt;&gt;&gt;     exec(code_obj, self.user_global_ns, self.user_ns)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Local\TEMP_~1/ipykernel_7276/1235084826.py&quot;, line 2, in &lt;module&gt;
+&gt;&gt;&gt;     history = model.fit_generator(datagen.flow(X_train,Y_train, batch_size=batch_size),
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\engine\training.py&quot;, line 2016, in fit_generator
+&gt;&gt;&gt;     return self.fit(
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\utils\traceback_utils.py&quot;, line 64, in error_handler
+&gt;&gt;&gt;     return fn(*args, **kwargs)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\engine\training.py&quot;, line 1216, in fit
+&gt;&gt;&gt;     tmp_logs = self.train_function(iterator)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\engine\training.py&quot;, line 878, in train_function
+&gt;&gt;&gt;     return step_function(self, iterator)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\engine\training.py&quot;, line 867, in step_function
+&gt;&gt;&gt;     outputs = model.distribute_strategy.run(run_step, args=(data,))
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\engine\training.py&quot;, line 860, in run_step
+&gt;&gt;&gt;     outputs = model.train_step(data)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\engine\training.py&quot;, line 809, in train_step
+&gt;&gt;&gt;     loss = self.compiled_loss(
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\engine\compile_utils.py&quot;, line 201, in __call__
+&gt;&gt;&gt;     loss_value = loss_obj(y_t, y_p, sample_weight=sw)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\losses.py&quot;, line 141, in __call__
+&gt;&gt;&gt;     losses = call_fn(y_true, y_pred)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\losses.py&quot;, line 242, in call
+&gt;&gt;&gt;     y_pred, y_true = losses_utils.squeeze_or_expand_dimensions(y_pred, y_true)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\utils\losses_utils.py&quot;, line 187, in squeeze_or_expand_dimensions
+&gt;&gt;&gt;     y_true, y_pred = remove_squeezable_dimensions(
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\utils\losses_utils.py&quot;, line 130, in remove_squeezable_dimensions
+&gt;&gt;&gt;     labels = tf.squeeze(labels, [-1])
+&gt;&gt;&gt; ">
+<pre><code>---------------------------------------------------------------------------
+InvalidArgumentError                      Traceback (most recent call last)
+~\AppData\Local\TEMP_~1/ipykernel_7276/2932542358.py in &lt;module&gt;
+      1 # Fit the model
+----&gt; 2 history = model.fit_generator(datagen.flow(X_train,Y_train, batch_size=batch_size),
+      3                               epochs = epochs, validation_data = (X_val,Y_val), steps_per_epoch=X_train.shape[0] )
+
+~\AppData\Roaming\Python\Python39\site-packages\keras\engine\training.py in fit_generator(self, generator, steps_per_epoch, epochs, verbose, callbacks, validation_data, validation_steps, validation_freq, class_weight, max_queue_size, workers, use_multiprocessing, shuffle, initial_epoch)
+   2014         &#39;Please use `Model.fit`, which supports generators.&#39;,
+   2015         stacklevel=2)
+-&gt; 2016     return self.fit(
+   2017         generator,
+   2018         steps_per_epoch=steps_per_epoch,
+
+~\AppData\Roaming\Python\Python39\site-packages\keras\utils\traceback_utils.py in error_handler(*args, **kwargs)
+     65     except Exception as e:  # pylint: disable=broad-except
+     66       filtered_tb = _process_traceback_frames(e.__traceback__)
+---&gt; 67       raise e.with_traceback(filtered_tb) from None
+     68     finally:
+     69       del filtered_tb
+
+~\AppData\Roaming\Python\Python39\site-packages\tensorflow\python\eager\execute.py in quick_execute(op_name, num_outputs, inputs, attrs, ctx, name)
+     56   try:
+     57     ctx.ensure_initialized()
+---&gt; 58     tensors = pywrap_tfe.TFE_Py_Execute(ctx._handle, device_name, op_name,
+     59                                         inputs, attrs, num_outputs)
+     60   except core._NotOkStatusException as e:
+
+InvalidArgumentError:  Can not squeeze dim[2], expected a dimension of 1, got 10
+	 [[node categorical_crossentropy/remove_squeezable_dimensions/Squeeze
+ (defined at C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\utils\losses_utils.py:130)
+]] [Op:__inference_train_function_1038]
+
+Errors may have originated from an input operation.
+Input Source operations connected to node categorical_crossentropy/remove_squeezable_dimensions/Squeeze:
+In[0] IteratorGetNext (defined at C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\engine\training.py:866)
+
+Operation defined at: (most recent call last)
+&gt;&gt;&gt;   File &quot;C:\Program Files\Python39\lib\runpy.py&quot;, line 197, in _run_module_as_main
+&gt;&gt;&gt;     return _run_code(code, main_globals, None,
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Program Files\Python39\lib\runpy.py&quot;, line 87, in _run_code
+&gt;&gt;&gt;     exec(code, run_globals)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\ipykernel_launcher.py&quot;, line 16, in &lt;module&gt;
+&gt;&gt;&gt;     app.launch_new_instance()
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\traitlets\config\application.py&quot;, line 845, in launch_instance
+&gt;&gt;&gt;     app.start()
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\ipykernel\kernelapp.py&quot;, line 667, in start
+&gt;&gt;&gt;     self.io_loop.start()
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\tornado\platform\asyncio.py&quot;, line 199, in start
+&gt;&gt;&gt;     self.asyncio_loop.run_forever()
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Program Files\Python39\lib\asyncio\base_events.py&quot;, line 596, in run_forever
+&gt;&gt;&gt;     self._run_once()
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Program Files\Python39\lib\asyncio\base_events.py&quot;, line 1890, in _run_once
+&gt;&gt;&gt;     handle._run()
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Program Files\Python39\lib\asyncio\events.py&quot;, line 80, in _run
+&gt;&gt;&gt;     self._context.run(self._callback, *self._args)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\ipykernel\kernelbase.py&quot;, line 457, in dispatch_queue
+&gt;&gt;&gt;     await self.process_one()
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\ipykernel\kernelbase.py&quot;, line 446, in process_one
+&gt;&gt;&gt;     await dispatch(*args)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\ipykernel\kernelbase.py&quot;, line 353, in dispatch_shell
+&gt;&gt;&gt;     await result
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\ipykernel\kernelbase.py&quot;, line 648, in execute_request
+&gt;&gt;&gt;     reply_content = await reply_content
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\ipykernel\ipkernel.py&quot;, line 345, in do_execute
+&gt;&gt;&gt;     res = shell.run_cell(code, store_history=store_history, silent=silent)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\ipykernel\zmqshell.py&quot;, line 532, in run_cell
+&gt;&gt;&gt;     return super(ZMQInteractiveShell, self).run_cell(*args, **kwargs)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\IPython\core\interactiveshell.py&quot;, line 2898, in run_cell
+&gt;&gt;&gt;     result = self._run_cell(
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\IPython\core\interactiveshell.py&quot;, line 2944, in _run_cell
+&gt;&gt;&gt;     return runner(coro)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\IPython\core\async_helpers.py&quot;, line 68, in _pseudo_sync_runner
+&gt;&gt;&gt;     coro.send(None)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\IPython\core\interactiveshell.py&quot;, line 3169, in run_cell_async
+&gt;&gt;&gt;     has_raised = await self.run_ast_nodes(code_ast.body, cell_name,
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\IPython\core\interactiveshell.py&quot;, line 3361, in run_ast_nodes
+&gt;&gt;&gt;     if (await self.run_code(code, result,  async_=asy)):
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\IPython\core\interactiveshell.py&quot;, line 3441, in run_code
+&gt;&gt;&gt;     exec(code_obj, self.user_global_ns, self.user_ns)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Local\TEMP_~1/ipykernel_7276/1235084826.py&quot;, line 2, in &lt;module&gt;
+&gt;&gt;&gt;     history = model.fit_generator(datagen.flow(X_train,Y_train, batch_size=batch_size),
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\engine\training.py&quot;, line 2016, in fit_generator
+&gt;&gt;&gt;     return self.fit(
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\utils\traceback_utils.py&quot;, line 64, in error_handler
+&gt;&gt;&gt;     return fn(*args, **kwargs)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\engine\training.py&quot;, line 1216, in fit
+&gt;&gt;&gt;     tmp_logs = self.train_function(iterator)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\engine\training.py&quot;, line 878, in train_function
+&gt;&gt;&gt;     return step_function(self, iterator)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\engine\training.py&quot;, line 867, in step_function
+&gt;&gt;&gt;     outputs = model.distribute_strategy.run(run_step, args=(data,))
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\engine\training.py&quot;, line 860, in run_step
+&gt;&gt;&gt;     outputs = model.train_step(data)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\engine\training.py&quot;, line 809, in train_step
+&gt;&gt;&gt;     loss = self.compiled_loss(
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\engine\compile_utils.py&quot;, line 201, in __call__
+&gt;&gt;&gt;     loss_value = loss_obj(y_t, y_p, sample_weight=sw)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\losses.py&quot;, line 141, in __call__
+&gt;&gt;&gt;     losses = call_fn(y_true, y_pred)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\losses.py&quot;, line 242, in call
+&gt;&gt;&gt;     y_pred, y_true = losses_utils.squeeze_or_expand_dimensions(y_pred, y_true)
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\utils\losses_utils.py&quot;, line 187, in squeeze_or_expand_dimensions
+&gt;&gt;&gt;     y_true, y_pred = remove_squeezable_dimensions(
+&gt;&gt;&gt; 
+&gt;&gt;&gt;   File &quot;C:\Users\W2S\AppData\Roaming\Python\Python39\site-packages\keras\utils\losses_utils.py&quot;, line 130, in remove_squeezable_dimensions
+&gt;&gt;&gt;     labels = tf.squeeze(labels, [-1])
+&gt;&gt;&gt; 
+</code></pre>
+</div>
+</div>
+</body>
+</html>
